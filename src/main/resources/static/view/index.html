@@ -1,0 +1,147 @@
+<!doctype html>
+<html ng-app="myApp">
+    <head>
+        <title>Contatos</title>
+        <meta charset="UTF-8">
+        <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"></script>
+        <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"></script>
+        <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.3/angular.min.js"></script>
+        <!--        <script src="/css/bootstrap/bootstrap.min.css"></script>
+                <script src="/js/bootstrap/bootstrap.min.js"></script>-->
+        <script src="/js/app/app.js"></script>
+        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css">
+        <script type="text/javascript">
+            function validarCollapseForm() {
+                if (!$('#contatoForm').hasClass('show')) {
+                    $('#collapseBtn').click();
+                }
+            }
+        </script>
+    </head>
+
+    <body>
+        <div ng-controller="Contacts" class="container">
+            <div class="row" style="padding: 20px">
+                <div class="col-sm-10">
+                    <h1 style="text-align: center">Meus Contatos</h1>
+                </div>
+                <div class="col-sm-2" style="text-align: right; vertical-align: middle">
+                    <button id="collapseBtn"
+                            style="visibility: hidden"
+                            type="button"
+                            data-toggle="collapse"
+                            data-target="#contatoForm"
+                            aria-expanded="false"
+                            aria-controls="contatoForm"></button>
+                    <button class="btn btn-sm btn-info"
+                            type="button"
+                            ng-click="novo()"
+                            onclick="validarCollapseForm()">
+                        Novo
+                    </button>
+                </div>
+            </div>
+
+            <div id="contatoForm" class="collapse">
+                <form name="novoContatoForm" class="needs-validation">
+                    <div class="form-group row">
+                        <label for="name" class="col-sm-2 col-form-label">Nome *</label>
+                        <div class="col-sm-10">
+                            <input id="name" type="text" ng-model="contatoDto.name" class="form-control" required/>
+                        </div>
+                    </div>
+
+                    <div class="form-group row">
+                        <label for="email" class="col-sm-2 col-form-label">e-Mail</label>
+                        <div class="col-sm-10">
+                            <input id="email" type="email" ng-model="contatoDto.email" class="form-control"/>
+                        </div>
+                    </div>
+
+                    <div class="form-group row">
+                        <label for="phone" class="col-sm-2 col-form-label">Telefone</label>
+                        <div class="col-sm-10">
+                            <input id="phone" type="text" ng-model="contatoDto.phone" class="form-control"/>
+                        </div>
+                    </div>
+                    
+                    <div class="row">
+                        <div class="col-sm-2"></div>
+                        <div class="col-sm-10">
+                            <small>* Campo requerido</small>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-sm-2"></div>
+                        <div class="col-sm-10" style="text-align: right">
+                            <button class="btn btn-sm btn-info"
+                                    type="button"
+                                    ng-click="gravar(novoContatoForm.$valid)">
+                                Gravar
+                            </button>
+                            <button class="btn btn-sm btn-info"
+                                    type="button"
+                                    data-toggle="collapse"
+                                    data-target="#contatoForm"
+                                    aria-expanded="false"
+                                    aria-controls="contatoForm"
+                                    ng-click="novo()">
+                                Cancelar
+                            </button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+
+            <div class="row" style="padding: 50px">
+                <div class="col-sm-12">
+                    <div class="form-group">
+                        <div class="input-group">
+                            <div class="input-group-addon">
+                                <i class="glyphicon glyphicon-search"></i>
+                            </div>
+                            <input type="text"
+                                   class="form-control"
+                                   name="pesquisa"
+                                   placeholder="Quem você procura?"
+                                   ng-model="pesquisa"/>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-sm-12">
+                    <table class="table table-striped">
+                        <thead>
+                            <tr>
+                                <th scope="col">Nome</th>
+                                <th scope="col">e-Mail</th>
+                                <th scope="col">Telefone</th>          
+                                <th scope="col">Ações</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr ng-repeat="contact in contacts| filter:pesquisa" scope="row">
+                                <td>{{contact.name}}</td>
+                                <td>{{contact.email}}</td>
+                                <td>{{contact.phone}}</td>
+                                <td>
+                                    <button class="btn btn-sm btn-info"
+                                            type="button"
+                                            ng-click="editar(contact)"
+                                            onclick="validarCollapseForm()">
+                                        Editar
+                                    </button>
+                                    <!--<button ng-click="editar(contact)" class="btn btn-sm btn-info">Editar</button>-->
+                                    <button ng-click="excluir(contact.name, contact._links.self.href)" class="btn btn-sm btn-info">Excluir</button>
+                                </td>
+                                <!--<td><button (click)="deleteEmployee(employee.id)">Delete</button></td>-->
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </body>
+</html>
+
